@@ -13,16 +13,21 @@ builder.Services.AddDbContext<StoreContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddCors();
 
 var app = builder.Build();
 
+//konfigurimi i middleware-ave
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }   
+app.UseCors(opt => 
+{
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000","http://localhost:3002");
+});
 
 app.UseAuthorization();
 
